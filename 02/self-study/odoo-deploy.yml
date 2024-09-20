@@ -13,11 +13,18 @@ spec:
       labels:
         app: odoo
     spec:
+      volumes:
+        - name: odoo
+          persistentVolumeClaim:
+            claimName: odoo-pvc
       containers:
         - name: odoo
           image: docker.io/bitnami/odoo:16
           ports:
             - containerPort: 8069
+          volumeMounts:
+            - mountPath: /bitnami/odoo
+              name: odoo
           env:
             - name: ODOO_DATABASE_NAME
               value: 'k8smaestro'

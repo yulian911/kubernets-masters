@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch-dbg
+spec:
+  selector:
+    matchLabels:
+      component: elasticsearch-dbg
+  template:
+    metadata:
+      labels:
+        component: elasticsearch-dbg
+    spec:
+      containers:
+      - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.4.1
+        env:
+        - name: discovery.type
+          value: single-node
+        ports:
+        - containerPort: 9200
+          name: http
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1Gi
+          requests:
+            cpu: 300m
+            memory: 800Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch-dbg
+  labels:
+    service: elasticsearch-dbg
+spec:
+  type: NodePort
+  selector:
+    component: elasticsearch-dbg
+  ports:
+  - port: 9200
+    targetPort: 9200

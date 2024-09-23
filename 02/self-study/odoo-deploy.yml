@@ -5,6 +5,11 @@ metadata:
   namespace: odoo
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   selector:
     matchLabels:
       app: odoo
@@ -19,15 +24,22 @@ spec:
             claimName: odoo-pvc
       containers:
         - name: odoo
-          image: docker.io/bitnami/odoo:16
+          image: docker.io/bitnami/odoo:15
           ports:
             - containerPort: 8069
           volumeMounts:
             - mountPath: /bitnami/odoo
               name: odoo
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "1"
           env:
             - name: ODOO_DATABASE_NAME
-              value: 'k8smaestro'
+              value: "k8smaestro"
             - name: ODOO_DATABASE_USER
               valueFrom:
                 configMapKeyRef:
@@ -39,6 +51,6 @@ spec:
                   name: odoo-secret
                   key: DB_PASSWORD
             - name: ODOO_DATABASE_PORT_NUMBER
-              value: '5432'
+              value: "5432"
             - name: ODOO_DATABASE_HOST
-              value: 'postgresql.odoo.svc.cluster.local'
+              value: "postgresql.odoo.svc.cluster.local"

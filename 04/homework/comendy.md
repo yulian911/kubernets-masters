@@ -3,6 +3,8 @@ instalacja ingresa w chmurze:
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.5.1/deploy/static/provider/cloud/deploy.yaml
 
 kubectl get pods -n [name_namespace] name=ingress-nginx --watch
+kubectl get pods -n ingress-nginx -l name=ingress-nginx --watch
+kubectl get svc --namespace=ingress-nginx
 
 kubectl get svc --namespace=[name_namespace]
 

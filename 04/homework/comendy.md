@@ -46,3 +46,6 @@ do sprawdzania endpointów placzyen z backendem:
 kubectl get endpoints [api-service (nazwa serwisu backendu)]
 
 helm create [nazwa]
+
+sprawdzenie develpmentu 
+kubectl logs -l name:api
